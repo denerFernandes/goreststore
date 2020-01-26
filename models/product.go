@@ -1,0 +1,11 @@
+package models
+
+// User - Models the user
+type Product struct {
+	ID          int     `json:"id"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Image       string  `json:"image"`
+	Price       float64 `json:"price"`
+	Status      bool    `json:"status"`
+}
