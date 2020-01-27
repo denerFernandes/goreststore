@@ -1,6 +1,6 @@
-## ** WIP - GO REST API WITH JWT**
+## **WIP - GO REST API WITH JWT**
 
-Don't use in production, this code are for study GO
+Do not use in production, this code is for the GO study
 
 **Next Steps**
 

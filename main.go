@@ -41,7 +41,7 @@ func main() {
 	utils.LogToTerm("Listen on port " + os.Getenv("APP_PORT") + "....")
 
 	r := routes.NewRouter()
-	fmt.Println("Listening to port 8080")
+	fmt.Println("Listening to port " + os.Getenv("APP_PORT"))
 	utils.LogFatal(http.ListenAndServe(":"+os.Getenv("APP_PORT"), routes.LoadCors(r)))
 
 }
