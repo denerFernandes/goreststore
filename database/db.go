@@ -1,27 +1,39 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
-	"os"
+	"log"
 
-	"github.com/denerFernandes/goreststore/utils"
+	"github.com/denerFernandes/goreststore/models"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
+// Server - Server struct
+type Server struct {
+	DB     *gorm.DB
+	Router *mux.Router
+}
 
-// ConnectDB - Connect in database and return the connection
-func Connect() *sql.DB {
+// Initialize - Initialize server
+func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 
-	pgURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
-		os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_NAME"), os.Getenv("DB_PASS"))
+	var err error
 
-	db, err := sql.Open("postgres", pgURL)
-	utils.LogFatal(err)
+	dbConnection := fmt.Sprintf("host=%s port=%s user=%s sslmode=disable dbname=%s password=%s",
+		DbHost, DbPort, DbUser, DbName, DbPassword)
 
-	err = db.Ping()
-	utils.LogFatal(err)
+	server.DB, err = gorm.Open(Dbdriver, dbConnection)
+	if err != nil {
+		fmt.Printf("Cannot connect to %s database ", Dbdriver)
+		log.Fatal("This is the error:", err)
+	} else {
+		fmt.Printf("We are connected to the %s database", Dbdriver)
+	}
 
-	return db
+	server.DB.Debug().AutoMigrate(
+		&models.User{},
+	) //database migration
+
 }
